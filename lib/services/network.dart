@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 class Network {
   String? url;
   int? user_id;
+  String? json;
   Network({this.url});
   Future getData(String? email, String? password) async {
     var dio = Dio();
@@ -34,6 +35,25 @@ class Network {
       print(response_recieved.data);
       if (response_recieved.statusCode == 200) {
         this.user_id = response_recieved.data['userid'];
+        return true;
+        // print(response.stream.toBytes());
+      } else {
+        print("ahhhh");
+        return false;
+      }
+    } on DioError catch (e) {
+      return false;
+    }
+  }
+
+  Future getRestaurants() async {
+    var dio = Dio();
+    try {
+      final response_recieved =
+          await dio.get('http://dasistallesnurge.cloud/restaurants');
+      print(response_recieved.data);
+      if (response_recieved.statusCode == 200) {
+        this.json = response_recieved.data;
         return true;
         // print(response.stream.toBytes());
       } else {

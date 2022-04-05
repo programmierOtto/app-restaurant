@@ -1,3 +1,4 @@
+import 'package:app_restaurant/restaurants.dart';
 import 'package:flutter/material.dart';
 import 'package:app_restaurant/home_screen.dart';
 import './constants.dart';
@@ -56,6 +57,22 @@ class _LoginScreenState extends State<LoginScreen> {
         final snackBar = SnackBar(content: Text('mail already registered'));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+    }
+  }
+
+  void showRestaurants() async {
+    Network networkHelper = Network();
+    var response = await networkHelper.getRestaurants();
+
+    if (response) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Restaurants(json: networkHelper.json)));
+    } else {
+      print('oops');
+      final snackBar = SnackBar(content: Text('mail already registered'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -128,6 +145,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 'Forgot Password?',
                 textAlign: TextAlign.center,
                 style: kFormText.copyWith(color: Color(0xFFF19D38)),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              InkWell(
+                onTap: () {
+                  print('useer tapped');
+                  showRestaurants();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: Color(0xFFF19D38)),
+                  padding: EdgeInsets.all(12.0),
+                  child: Text(
+                    'ShowRestaurants',
+                    textAlign: TextAlign.center,
+                    style: kFormText,
+                  ),
+                ),
               ),
               SizedBox(
                 height: 20.0,
